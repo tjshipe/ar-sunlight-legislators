@@ -8,9 +8,20 @@ task "db:create" do
   touch 'db/ar-sunlight-legislators.sqlite3'
 end
 
+desc "populate the database with sample data"
+task "db:populate" do
+  require_relative './lib/sunlight_legislators_importer'
+  SunlightLegislatorsImporter.import('./db/data/legislators.csv')
+end
+
 desc "drop the database"
 task "db:drop" do
   rm_f 'db/ar-sunlight-legislators.sqlite3'
+end
+
+desc "console"
+task "db:console" do
+  system 'sqlite3 db/ar-sunlight-legislators.sqlite3'
 end
 
 desc "migrate the database (options: VERSION=x, VERBOSE=false, SCOPE=blog)."
